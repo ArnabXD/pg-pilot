@@ -8,11 +8,10 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-if [ -f "build/bin/pg-pilot" ]; then
-  cd "$(dirname "$0")/../.."
-  BIN_SRC="build/bin/pg-pilot"
-  ICON_SRC="build/appicon.png"
-  DESKTOP_SRC="build/linux/pg-pilot.desktop"
+if [ -f "../bin/pg-pilot" ]; then
+  BIN_SRC="../bin/pg-pilot"
+  ICON_SRC="../appicon.png"
+  DESKTOP_SRC="pg-pilot.desktop"
 else
   BIN_SRC="pg-pilot"
   ICON_SRC="appicon.png"
