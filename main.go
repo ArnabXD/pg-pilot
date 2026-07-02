@@ -21,11 +21,11 @@ func main() {
 
 	go systray.Run(func() {
 		systray.SetIcon(trayIcon)
-		systray.SetTooltip("pg-pilot")
+		systray.SetTooltip("PG Pilot")
 
-		show := systray.AddMenuItem("Show pg-pilot", "Show the main window")
+		show := systray.AddMenuItem("Show PG Pilot", "Show the main window")
 		systray.AddSeparator()
-		quit := systray.AddMenuItem("Quit", "Stop pg-pilot")
+		quit := systray.AddMenuItem("Quit", "Stop PG Pilot")
 
 		go func() {
 			for {
@@ -42,7 +42,7 @@ func main() {
 	}, func() {})
 
 	err := wails.Run(&options.App{
-		Title:  "pg-pilot",
+		Title:  "PG Pilot",
 		Width:  1024,
 		Height: 768,
 		AssetServer: &assetserver.Options{

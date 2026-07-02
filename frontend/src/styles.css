@@ -1,0 +1,233 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-bg: #ffffff;
+  --color-surface: #f6f6f7;
+  --color-border: #e5e4e7;
+  --color-fg: #08060d;
+  --color-muted: #6b6375;
+  --color-accent: #3563e9;
+  --color-accent-fg: #ffffff;
+  --color-danger: #dc2626;
+  --color-danger-bg: rgba(220, 38, 38, 0.08);
+  --color-success: #17a35e;
+  --color-success-bg: #e4f7ed;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) {
+    --color-bg: #16171d;
+    --color-surface: #22232b;
+    --color-border: #2e303a;
+    --color-fg: #f3f4f6;
+    --color-muted: #9ca3af;
+    --color-accent: #6690f2;
+    --color-accent-fg: #0b0d12;
+    --color-danger: #f87171;
+    --color-danger-bg: rgba(248, 113, 113, 0.12);
+    --color-success: #34d399;
+    --color-success-bg: rgba(23, 163, 94, 0.18);
+  }
+}
+
+html.dark {
+  --color-bg: #16171d;
+  --color-surface: #22232b;
+  --color-border: #2e303a;
+  --color-fg: #f3f4f6;
+  --color-muted: #9ca3af;
+  --color-accent: #6690f2;
+  --color-accent-fg: #0b0d12;
+  --color-danger: #f87171;
+  --color-danger-bg: rgba(248, 113, 113, 0.12);
+  --color-success: #34d399;
+  --color-success-bg: rgba(23, 163, 94, 0.18);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+
+#app {
+  zoom: var(--ui-scale, 1);
+}
+
+@layer components {
+  .topbar {
+    @apply h-11 flex items-center justify-between px-4 border-b border-border shrink-0;
+  }
+
+  .icon-btn {
+    @apply w-7 h-7 rounded-md border-0 bg-transparent text-fg flex items-center justify-center cursor-pointer transition-colors hover:bg-surface;
+  }
+
+  .col-head {
+    @apply grid gap-3 px-4 h-7 items-center text-[10.5px] uppercase tracking-wide text-muted border-b border-border shrink-0;
+    grid-template-columns: 20px 1fr auto auto auto 80px;
+  }
+
+  .row,
+  .row-open {
+    @apply grid gap-3 px-4 h-[46px] items-center border-b border-border cursor-pointer transition-colors hover:bg-surface;
+    grid-template-columns: 20px 1fr auto auto auto 80px;
+  }
+  .row-open {
+    @apply bg-surface;
+  }
+
+  .status-dot,
+  .status-dot-on {
+    @apply w-2 h-2 rounded-full justify-self-center;
+  }
+  .status-dot {
+    @apply bg-muted/40;
+  }
+  .status-dot-on {
+    @apply bg-success;
+  }
+
+  .row-name {
+    @apply flex flex-col gap-0.5 min-w-0 font-medium text-fg;
+  }
+  .row-path {
+    @apply text-[11px] font-normal text-muted truncate font-mono;
+  }
+  .row-version,
+  .row-port {
+    @apply text-[12px] text-muted font-mono;
+  }
+
+  .row-state,
+  .row-state-on {
+    @apply text-[11px] font-medium justify-self-start;
+  }
+  .row-state {
+    @apply text-muted;
+  }
+  .row-state-on {
+    @apply text-success;
+  }
+
+  .row-toggle-start,
+  .row-toggle-stop {
+    @apply flex items-center justify-center gap-1 h-6 px-2 rounded-md text-[11px] font-medium border border-border cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .row-toggle-start {
+    @apply bg-transparent text-fg hover:bg-surface;
+  }
+  .row-toggle-stop {
+    @apply bg-transparent text-danger hover:bg-danger-bg;
+  }
+
+  .empty-icon {
+    @apply w-10 h-10 rounded-full bg-surface text-muted flex items-center justify-center;
+  }
+  .empty-title {
+    @apply text-[13px] font-medium text-fg;
+  }
+  .empty-desc {
+    @apply text-[12px] text-muted;
+  }
+
+  .muted {
+    @apply text-muted;
+  }
+
+  .error-banner {
+    @apply mx-4 mt-2 px-3 py-2 rounded-md text-[12px] bg-danger-bg text-danger;
+  }
+
+  .btn,
+  .btn-primary,
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-1.5 h-7 px-3 rounded-md text-[12px] font-medium cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn {
+    @apply bg-transparent text-fg border border-border hover:bg-surface;
+  }
+  .btn-primary {
+    @apply bg-accent text-accent-fg border-0 hover:opacity-90;
+  }
+  .btn-danger {
+    @apply bg-transparent text-danger border border-border hover:bg-danger-bg;
+  }
+
+  .modal-backdrop {
+    @apply fixed inset-0 bg-black/40 z-40;
+  }
+  .modal,
+  .modal-wide {
+    @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 flex flex-col gap-3 bg-bg border border-border rounded-lg shadow-xl p-4;
+  }
+  .modal {
+    @apply w-[340px];
+  }
+  .modal-wide {
+    @apply w-[420px];
+  }
+  .modal-title {
+    @apply text-[13px] font-semibold text-fg m-0;
+  }
+  .modal-desc {
+    @apply text-[12px] text-muted m-0;
+  }
+  .modal-actions {
+    @apply flex justify-end gap-2 mt-1;
+  }
+
+  .field {
+    @apply flex flex-col gap-1 text-[12px] text-muted;
+  }
+  .field-input {
+    @apply h-8 px-2.5 rounded-md border border-border bg-bg text-fg text-[13px] outline-none focus:border-accent;
+    -moz-appearance: textfield;
+  }
+  .field-input::-webkit-outer-spin-button,
+  .field-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .drawer {
+    @apply fixed inset-x-0 bottom-0 z-50 flex flex-col bg-bg border-t border-border rounded-t-lg shadow-xl;
+  }
+  .drawer-handle {
+    @apply h-1.5 w-full shrink-0 cursor-ns-resize flex items-center justify-center;
+  }
+  .drawer-handle::after {
+    content: '';
+    @apply w-9 h-1 rounded-full bg-border;
+  }
+  .drawer-header {
+    @apply flex items-center justify-between gap-3 px-4 h-11 border-b border-border shrink-0;
+  }
+  .drawer-title {
+    @apply flex items-center gap-2 min-w-0 text-[13px] font-semibold truncate;
+  }
+  .conn-inline {
+    @apply text-[11px] font-normal font-mono text-muted truncate;
+  }
+  .drawer-actions {
+    @apply flex items-center gap-1.5 shrink-0;
+  }
+  .drawer-body {
+    @apply flex-1 overflow-y-auto m-0 p-4 text-[11px] font-mono text-muted whitespace-pre-wrap wrap-break-word;
+  }
+
+  .version-list {
+    @apply flex flex-col gap-1 max-h-[300px] overflow-y-auto;
+  }
+  .version-row {
+    @apply flex items-center gap-2 px-2.5 py-2 rounded-md border border-border;
+  }
+  .version-name {
+    @apply flex-1 text-[13px] font-mono text-fg;
+  }
+  .version-size {
+    @apply text-[11px] text-muted;
+  }
+}

@@ -18,6 +18,14 @@ export function DeleteInstance(arg1) {
   return window['go']['main']['App']['DeleteInstance'](arg1);
 }
 
+export function DeleteVersion(arg1) {
+  return window['go']['main']['App']['DeleteVersion'](arg1);
+}
+
+export function InstalledVersions() {
+  return window['go']['main']['App']['InstalledVersions']();
+}
+
 export function Log(arg1, arg2) {
   return window['go']['main']['App']['Log'](arg1, arg2);
 }

@@ -1,5 +1,21 @@
 export namespace pg {
 	
+	export class InstalledVersion {
+	    version: string;
+	    bytes: number;
+	    inUse: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new InstalledVersion(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.bytes = source["bytes"];
+	        this.inUse = source["inUse"];
+	    }
+	}
 	export class InstanceStatus {
 	    name: string;
 	    version: string;

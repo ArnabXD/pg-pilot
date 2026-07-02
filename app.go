@@ -86,3 +86,14 @@ func (a *App) Log(name string, n int) (string, error) {
 func (a *App) OpenDataDir(name string) {
 	runtime.BrowserOpenURL(a.ctx, "file://"+pg.DataDir(name))
 }
+
+// InstalledVersions lists Postgres versions downloaded to disk.
+func (a *App) InstalledVersions() ([]pg.InstalledVersion, error) {
+	return pg.InstalledVersions()
+}
+
+// DeleteVersion removes a downloaded Postgres version not in use by any
+// instance.
+func (a *App) DeleteVersion(version string) error {
+	return pg.DeleteVersion(version)
+}

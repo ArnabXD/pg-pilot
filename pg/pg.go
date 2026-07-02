@@ -26,7 +26,7 @@ import (
 
 // curatedMajors are the Postgres major versions offered in the version
 // picker. Update this list as majors go EOL / new ones ship.
-var curatedMajors = []string{"17", "16", "15", "14"}
+var curatedMajors = []string{"18", "17", "16", "15", "14"}
 
 // AvailableVersions fetches the latest patch release for each curated major
 // version from Maven Central. Requires network; done in Go rather than the
@@ -175,6 +175,84 @@ func versionInstalled(version string) bool {
 	}
 	_, err := os.Stat(filepath.Join(binDir(version), initdb))
 	return err == nil
+}
+
+// InstalledVersion is a locally downloaded Postgres version, plus whether
+// any registered instance currently depends on it.
+type InstalledVersion struct {
+	Version string `json:"version"`
+	Bytes   int64  `json:"bytes"`
+	InUse   bool   `json:"inUse"`
+}
+
+// InstalledVersions lists Postgres versions downloaded to disk.
+func InstalledVersions() ([]InstalledVersion, error) {
+	entries, err := os.ReadDir(filepath.Join(baseDir, "versions"))
+	if os.IsNotExist(err) {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	instances, err := loadRegistry()
+	if err != nil {
+		return nil, err
+	}
+	inUse := map[string]bool{}
+	for _, inst := range instances {
+		inUse[inst.Version] = true
+	}
+
+	var out []InstalledVersion
+	for _, e := range entries {
+		if !e.IsDir() {
+			continue
+		}
+		size, err := dirSize(versionDir(e.Name()))
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, InstalledVersion{Version: e.Name(), Bytes: size, InUse: inUse[e.Name()]})
+	}
+	return out, nil
+}
+
+func dirSize(path string) (int64, error) {
+	var total int64
+	err := filepath.WalkDir(path, func(_ string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return nil
+		}
+		info, err := d.Info()
+		if err != nil {
+			return err
+		}
+		total += info.Size()
+		return nil
+	})
+	return total, err
+}
+
+// DeleteVersion removes a downloaded Postgres version's files. Refuses if
+// any registered instance still uses it.
+func DeleteVersion(version string) error {
+	instances, err := loadRegistry()
+	if err != nil {
+		return err
+	}
+	for _, inst := range instances {
+		if inst.Version == version {
+			return fmt.Errorf("version %q is used by instance %q", version, inst.Name)
+		}
+	}
+	if !versionInstalled(version) {
+		return fmt.Errorf("version %q is not installed", version)
+	}
+	return os.RemoveAll(versionDir(version))
 }
 
 // downloadVersion fetches and unpacks a Postgres version if not already

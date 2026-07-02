@@ -10,6 +10,10 @@ export function CreateInstance(arg1:string,arg2:string,arg3:number):Promise<void
 
 export function DeleteInstance(arg1:string):Promise<void>;
 
+export function DeleteVersion(arg1:string):Promise<void>;
+
+export function InstalledVersions():Promise<Array<pg.InstalledVersion>>;
+
 export function Log(arg1:string,arg2:number):Promise<string>;
 
 export function OpenDataDir(arg1:string):Promise<void>;

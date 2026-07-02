@@ -10,8 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.1.18",
+    "@radix-ui/react-dialog": "^1.1.18",
+    "@radix-ui/react-select": "^2.3.2",
+    "@tailwindcss/vite": "^4.3.2",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.23.0",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
