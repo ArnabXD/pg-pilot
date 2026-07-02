@@ -1,11 +1,24 @@
 #!/usr/bin/env bash
 # Installs pg-pilot into the current user's XDG dirs so it shows up in the
-# desktop app launcher. Run after `wails build`. No root required.
+# desktop app launcher. No root required.
+#
+# Works two ways:
+#   - from a repo checkout, after `wails build`
+#   - from an extracted release tarball (binary/icon/.desktop next to this script)
 set -euo pipefail
-cd "$(dirname "$0")/../.."
+cd "$(dirname "$0")"
 
-BIN_SRC="build/bin/pg-pilot"
-ICON_SRC="build/appicon.png"
+if [ -f "build/bin/pg-pilot" ]; then
+  cd "$(dirname "$0")/../.."
+  BIN_SRC="build/bin/pg-pilot"
+  ICON_SRC="build/appicon.png"
+  DESKTOP_SRC="build/linux/pg-pilot.desktop"
+else
+  BIN_SRC="pg-pilot"
+  ICON_SRC="appicon.png"
+  DESKTOP_SRC="pg-pilot.desktop"
+fi
+
 BIN_DEST="$HOME/.local/bin"
 ICON_THEME_DIR="$HOME/.local/share/icons/hicolor"
 DESKTOP_DEST="$HOME/.local/share/applications"
@@ -22,7 +35,7 @@ if command -v magick >/dev/null; then
 else
   install -Dm644 "$ICON_SRC" "$ICON_THEME_DIR/256x256/apps/pg-pilot.png"
 fi
-install -Dm644 build/linux/pg-pilot.desktop "$DESKTOP_DEST/pg-pilot.desktop"
+install -Dm644 "$DESKTOP_SRC" "$DESKTOP_DEST/pg-pilot.desktop"
 
 command -v update-desktop-database >/dev/null && update-desktop-database "$DESKTOP_DEST" || true
 # -t: rebuild even without a user-level index.theme (hicolor's system index covers us)

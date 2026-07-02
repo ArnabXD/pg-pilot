@@ -79,12 +79,18 @@ func AvailableVersions() ([]string, error) {
 func platformSuffix() (string, error) {
 	switch runtime.GOOS {
 	case "linux":
-		return "linux-amd64", nil
+		switch runtime.GOARCH {
+		case "amd64":
+			return "linux-amd64", nil
+		case "arm64":
+			return "linux-arm64v8", nil
+		}
 	case "windows":
-		return "windows-amd64", nil
-	default:
-		return "", fmt.Errorf("unsupported OS: %s", runtime.GOOS)
+		if runtime.GOARCH == "amd64" {
+			return "windows-amd64", nil
+		}
 	}
+	return "", fmt.Errorf("unsupported platform: %s/%s", runtime.GOOS, runtime.GOARCH)
 }
 
 var baseDir = func() string {
