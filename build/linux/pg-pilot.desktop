@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=pg-pilot
+Comment=Run local PostgreSQL instances, no system install required
+Exec=pg-pilot
+Icon=pg-pilot
+Terminal=false
+Categories=Development;
+StartupWMClass=pg-pilot
