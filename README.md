@@ -4,6 +4,8 @@ A lightweight Postgres.app alternative for Linux. Run one or more local,
 named PostgreSQL instances without installing Postgres system-wide — binaries
 are downloaded on demand and run entirely out of your home directory.
 
+![pg-pilot main window with a running instance](assets/image_01.png)
+
 ## Features
 
 - Portable, per-user Postgres — no root, no system package, no native install
@@ -12,6 +14,12 @@ are downloaded on demand and run entirely out of your home directory.
 - Log viewer, one-click connection string copy, and quick access to the data directory
 - System tray icon — instances keep running when the window is closed
 - Desktop launcher integration on Linux (see Installing below)
+
+![New instance dialog](assets/image_02.png)
+
+![Postgres versions manager](assets/image_03.png)
+
+![Settings](assets/image_04.png)
 
 ## How it works
 
